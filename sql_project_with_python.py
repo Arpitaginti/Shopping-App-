@@ -1,18 +1,31 @@
 import mysql.connector
 a = mysql.connector.connect(host="localhost", user="root", password="a1234")
 b = a.cursor()
-b.execute("use practicle")
-# b.execute("update stem set selling_price=cost_price+cost_price*0.10 where selling_price is NULL")
-# a.commit()
-b.execute("select *from stem")
-res = b.fetchall()
-for i in res:
-    print(i)
+'''b.execute("create database checks")
+a.commit()'''
+b.execute("use checking")
+'''
+b.execute("create table stem(product_id int,product_name char(20),product_company varchar(20),stock int, selling_price int,cost_price int)")
+ab=("insert into stem(product_id,product_name,product_company,stock,cost_price) values(%s,%s,%s,%s,%s)")
+ba=[(101,"t.v","samsung",1000,30000),(102,"mobile","samsung",1000,10000),(103,"laptop 4gb ","HP",1000,45000),(104,"laptop 8gb","dell",1000,60000),(105,"mobile","oppo",1000,18000),]
 
+
+b.execute("create table carts(id int,quantity int,total int)")
+a.commit()
+
+b.execute("create table date(date date,total int)")
+a.commit()'''
+
+b.execute("update stem set selling_price=cost_price+cost_price*0.10 where selling_price is NULL")
+a.commit()
 # admin display
-
+from clear_screen import clear
+import time
 
 def admin():
+    clear()
+    time.sleep(2)
+    
     print()
     print()
     print()
@@ -28,7 +41,9 @@ def admin():
         print("press 3 ---------------------------> Add")
         print("press 4 ---------------------------> Add New Admin")
         print("press 5 ---------------------------> Total  Sales Of a Day")
-        print("press 6 ---------------------------> Logout")
+        print("press 6 ---------------------------> Total  income Of a Day")
+        print("press 7 ---------------------------> Logout")
+        
         print()
         print()
         print("***************************************************************************************************************************")
@@ -46,10 +61,12 @@ def admin():
         elif(choice == 5):
             date()
         elif(choice == 6):
+            incomes()
+        elif(choice == 7):    
             logout()
         else:
             print("SORRY,you have entered wrong key")
-        again = (input("do you want again perform a operations"))
+        again = (input("do you want again perform a operations for choice "))
         if(again == "y"):
             continue
         else:
@@ -59,6 +76,8 @@ def admin():
 
 # add welcome
 def added():
+    clear()
+    time.sleep(2)
     print()
     print()
     print("*****************************************************************************************")
@@ -74,27 +93,32 @@ def added():
     print("*****************************************************************************************")
     print()
     print()
-
+    time.sleep(2)
 # user display
 
 
 def display():
+    clear()
+    time.sleep(2)
     print()
     print()
     print("************************************DISPLAY*****************************************************")
     print()
     print()
     b.execute("select * from stem")
+    
     print()
     print()
     print()
     print()
     h = b.fetchall()
+    print(h)
     a = ['Product Id', 'Product Name', 'product company',
          'Stock Available', 'selling Price', 'cost price']
     for i in h:
-        for j in range(0, len(h)):
-            print(a[j], ":", i[j])
+        for j in range(len(h)):
+            
+                print(a[j], ":", i[j])
         print()
     print()
     print()
@@ -102,66 +126,90 @@ def display():
     print("*****************************************************************************************")
     print()
     print()
+    time.sleep(10)
     admin()
 
 
 # user update
 def update():
+    clear()
+    time.sleep(2)
+    
     print()
     print()
     print("*********************UPDATE*******************")
     print()
     print()
-    ans1 = (input("do you want to update? y or n"))
-    if(ans1 == 'y' or ans1 == 'y'):
-        u_id = int(input("enter the product id"))
-        up = int(input("enter the update stock"))
-        v1 = ("update stem set stock=stock+ %s where product_id= %s")
-        v2 = (up, u_id)
-        b.execute(v1, v2,)
-        a.commit()
-    else:
-        print("no update")
-    print()
-    print()
-    print()
-    print()
-    print("*****************************************************************************************")
-    print()
+    while True:
+            ans1 = (input("do you want to update? y or n"))
+            if(ans1 == 'Y' or ans1 == 'y'):
+                u_id = int(input("enter the product id"))
+                up = int(input("enter the update stock"))
+                v1 = ("update stem set stock=stock+ %s where product_id= %s")
+                v2 = (up, u_id)
+                b.execute(v1, v2,)
+                a.commit()
+            else:
+                print("no update")
+            print()
+            print()
+            print()
+            print()
+            print("*****************************************************************************************")
+            print()
+            print("do you want again perform a operations for UPDATE")
+            agains = (input("enter y or n"))
+            if(agains == "y"):
+                        continue
+            else:
+                        break
+    time.sleep(4)
     print()
     admin()
 
 
 # add new products
 def add():
-    print()
-    print()
-    print("*********************ADD NEW DATA*******************")
-    print()
-    print()
-    ans = input("do you want to add?")
-    if(ans == 'y' or ans == 'Y'):
-        p = int(input("enter the id :"))
-        q = input("enter the name of product:")
-        r = input("enter the campany:")
-        r1 = int(input("enter stock: "))
-        s = int(input("enter the cost price:"))
-        n1 = "insert into stem(product_id,product_name,product_company,stock,cost_price) values(%s,%s,%s,%s,%s)"
-        n2 = (p, q, r, r1, s)
-        b.execute(n1, n2,)
-    else:
-        print("no update")
-    print()
-    print()
-    print()
-    print("*************************************************************************************************")
-    print()
+    clear()
+    time.sleep(2)
+    while True:
+        print()
+        print()
+        print("*********************ADD NEW DATA*******************")
+        print()
+        print()
+        ans = input("do you want to add?")
+        if(ans == 'y' or ans == 'Y'):
+            p = int(input("enter the id :"))
+            q = input("enter the name of product:")
+            r = input("enter the campany:")
+            r1 = int(input("enter stock: "))
+            s = int(input("enter the cost price:"))
+            n1 = "insert into stem(product_id,product_name,product_company,stock,cost_price) values(%s,%s,%s,%s,%s)"
+            n2 = (p, q, r, r1, s)
+            b.execute(n1, n2,)
+        else:
+            print("no update")
+        print()
+        print()
+        print()
+        print("*************************************************************************************************")
+        print()
+        print("do you want again perform a operations for ADD")
+        agains = (input("enter y or n"))
+        if(agains == "y"):
+                continue
+        else:
+                break
+    time.sleep(4)
     print()
     a.commit()
     admin()
 
 
 def date():  # print data from date
+    clear()
+    time.sleep(2)
     print()
     print()
     print()
@@ -199,17 +247,60 @@ def date():  # print data from date
     print("************************************************************************************************************************")
     print()
     print()
+    time.sleep(4)
     admin()
 
 
+def incomes():  # print data from date of total day sales
+    clear()
+    time.sleep(2)
+    print()
+    print()
+    print()
+    print("***************************************DISPLAY DATA ON CHART**********************************************************")
+    print()
+    print()
+
+    kl = []
+    lk = []
+    b.execute("select date from income")
+    k = b.fetchall()
+    for i in k:
+        kl.append(i[0])
+    
+    b.execute("select total from income")
+    l = b.fetchall()
+    for i in l:
+        lk.append(i[0])
+    
+    x = kl
+    print(x)
+    print(kl)
+    
+    y = lk
+    print(y)
+    print(lk)
+    from matplotlib import pyplot as p
+    p.bar(x, y, color="green")
+    p.xlabel("date")
+    p.ylabel("total purchase cost")
+    p.title("purchase cost of day")
+    p.show()
+    print()
+    print()
+    print()
+    print("************************************************************************************************************************")
+    print()
+    print()
+    time.sleep(4)
+    admin()
+    
+    
+    
+    
 def date1(t):  # insert data on date
-
-    import mysql.connector
-    a = mysql.connector.connect(
-        host="localhost", user='root', password="a1234")
-    b = a.cursor()
-    b.execute("use practicle")
-
+    clear()
+    time.sleep(2)
     from datetime import date
     day = date.today()
     print(day)
@@ -229,10 +320,39 @@ def date1(t):  # insert data on date
         bat = (t, day)
         b.execute(abt, bat)
         a.commit()
+        time.sleep(4)
+
+def income(c,n):  # insert data on datewise of income
+    clear()
+    time.sleep(2)
+    from datetime import date
+    day = date.today()
+    b.execute("select selling_price from stem where product_id ='%s'" % (c))
+    m=b.fetchall()
+    print(m)
+    mm=n*m[0]
+    print("today",day)
+    b.execute("select date from income where date ='%s'" % (day))
+    h = b.fetchall()
+    if h == []:
+        #print("date is not avilabe........you can insert")
+        ab = "insert into income(date,total)values(%s,%s)"
+        ba = (day, mm[0])
+        b.execute(ab, ba)
+        a.commit()
+        time.sleep(4)
+    else:
+        abt = "update income set total=(total+%s) where date =%s"
+        bat = (mm[0], day)
+        b.execute(abt, bat)
+        a.commit()
+        time.sleep(4)
 
 
 
 def new():
+    clear()
+    time.sleep(2)
     print()
     print()
     print()
@@ -250,10 +370,14 @@ def new():
     print("*************************************************************************************************")
     print()
     print()
+    time.sleep(4)
+    main()
 
 
 # user logout
 def logout():
+    clear()
+    time.sleep(2)
     print()
     print()
     print()
@@ -271,6 +395,9 @@ def logout():
 
 
 def guest():
+    clear()
+    time.sleep(2)
+    
     print()
     print()
     print()
@@ -282,7 +409,7 @@ def guest():
         print("press 2 for purchase")
         print("press 3 for carts")
         print("press 4 for returns")
-        print("press 5 for billing")
+        print("press 5 for bill ")
         print("press 6 for logout ")
         print()
         print()
@@ -305,7 +432,7 @@ def guest():
             g_logout()
         else:
             print("SORRY,you have entered wrong key")
-        agains = (input("do you want again perform a operations"))
+        agains = (input("do you want again perform a operations for choice"))
         if(agains == "y"):
             continue
         else:
@@ -315,18 +442,14 @@ def guest():
     print()
     print("***************************************************************************************************")
     print()
+    time.sleep(4)
     print()
 
 
 # guest display
 def g_display():
-    import mysql.connector
-    a = mysql.connector.connect(
-        host="localhost", user="root", password="a1234")
-    b = a.cursor()
-    b.execute("use practicle")
-    b.execute(
-        "select product_id,product_name,product_company,stock,selling_price from stem")
+    time.sleep(2)
+    b.execute("select product_id,product_name,product_company,stock,selling_price from stem")
     h = b.fetchall()
     print()
     print()
@@ -345,17 +468,14 @@ def g_display():
     print("**********************************************************************************************************")
     print()
     print()
+    time.sleep(4)
     guest()
 
 
 # purchase
 def g_purchase():
-    import mysql.connector
-    a = mysql.connector.connect(
-        host="localhost", user="root", password="a1234")
-    b = a.cursor()
-    b.execute("use practicle")
-
+    clear()
+    time.sleep(2)
     print()
     print()
     print("*********************PURCHASE*******************")
@@ -363,12 +483,15 @@ def g_purchase():
     print()
     while True:
         code = int(input("enter the id of product which you want to buy"))
-        b.execute(
-            "select selling_price from stem where product_id='%s'" % (code))
+        co=("select selling_price from stem where product_id='%s'")
+        de=(code,)
+        b.execute(co,de)
+        
         cd = list(b.fetchone())
         cd1 = cd
+        
         number = int(input("enter the quantity you need"))
-        date1(number)
+        date1(number) #function calling to date1 function with an argument
         a1 = ("select * from stem where product_id = %s ")
         a2 = (code,)
         b.execute(a1, a2,)
@@ -392,8 +515,8 @@ def g_purchase():
                         print("sorry ,we have less present")
                     else:
                         #print("flow in else ")
-                        print(number)
-                        print(code)
+                        #print(number)
+                        #print(code)
                         # b.execute("update stem set stock=stock - '%s' where stem.product_id='%s'" %(number,code))
 
                         up = "update stem set stock=stock - %s where stem.product_id=%s"
@@ -401,17 +524,15 @@ def g_purchase():
                         b.execute(up, dation)
                         #print("running ................")
 
-                        print(
-                            "the quantity of the product you enter is added")
-                        order(code, number)
-                        asd = ("update carts set total=%s*%s where id='%s'")
-                        bs = (cd1, number, code)
-                        b.execute(asd, bs)
+                        print("the quantity of the product you enter is added")
+                        order(code, number)#calling order
+                        asd = ("update carts set total=%s*%s where id= '%s' ")
+                        bs = (cd1[0], number, code,)
+                        b.execute(asd, bs,)
                         a.commit()
             else:
 
-                b.execute(
-                    "select stock from stem where product_id='%s'" % (code))
+                b.execute("select stock from stem where product_id='%s'" % (code))
                 se = b.fetchone()
                 for i in se:
                     print(i)
@@ -423,14 +544,13 @@ def g_purchase():
                         b.execute(a1, a2)
                         print("your purched item will be updated ")
                 a.commit()
-            agains = (input("do you want again perform a operations"))
+            agains = (input("do you want again perform a operations for purchase"))
             if(agains == "y"):
                 continue
             else:
-                print(
-                    "********************THANKS FOR SHIPPING***************************")
-                break
-
+                bill()
+                
+    time.sleep(4)
 
 # order
 def order(code, number):
@@ -439,11 +559,9 @@ def order(code, number):
     b.execute(sql, v)
     a.commit()
 
+
 # carts
-
-
 def carts():
-    sum=0
     print()
     print()
     print("************************************CARTS***********************************************************")
@@ -459,12 +577,15 @@ def carts():
     print()
     print("***********************************************************************************************************")
     print()
+    time.sleep(4)
     print()
     guest()
 
 
 # returns of products from carts
 def returns():
+    clear()
+    time.sleep(2)
     print()
     print()
     print("*********************RETURN PRODUCT*******************")
@@ -482,64 +603,67 @@ def returns():
     print("************************************************************************************************************")
     print()
     print()
+    time.sleep(4)
     guest()
 
 
 # bill pay
 def bill():
     print()
+    clear()
+    time.sleep(2)
     print()
     print()
     print("*********************************************BILL***********************************************************")
     print()
     print()
-    import mysql.connector
-    a = mysql.connector.connect(
-        host="localhost", user="root", password="a1234")
-    b = a.cursor()
-    b.execute("use net")
+    
     k = 0
     while True:
         print("do you want to pay for product")
         req = (input("press y or n"))
         if(req == 'y'):
-            print("enter your product id for billing")
-            id = int(int(input("?")))
-            it = ("select total from carts where id ='%s' ")
-            td = (id,)
-            print(td)
-            b.execute(it, td)
-            ha = list(b.fetchall())
-            k = k+sum(ha)
-            print("your total bill is", k)
-            de = ("delete from carts where id = '%s'")
-            le = (id,)
-            b.execute(de, le)
+            b.execute("select id from carts")
+            dele =b.fetchall()
+            
+            b.execute("select total from carts")
+            ha =list(b.fetchall())
+            
+            n=0
+       
+            k =[i[0] for i in ha]
+            for i in k:
+                n=n+i
+            print("your total bill is", n)
             print("billing done")
             print()
             print()
             a.commit()
-            print("do want to pay for another product?")
-            requ = (input("press y or n"))
-            if(requ == "y"):
-                continue
-            else:
-                print("thanku for shipping")
+            print("thanku for shipping")
+            for i in dele:
+                i=i[0]
+                d = ("delete from carts where id= '%s' ")
+                t = (i,)
+                b.execute(d, t)
+                a.commit()
+            a.commit()
+            time.sleep(6)
             guest()
 
         else:
             print("see you next time")
             guest()
+            
             print()
     print()
     print()
     print("*************************************************************************************************")
     print()
     print()
-
-
 # logout()
 def g_logout():
+    clear()
+    time.sleep(2)
     print()
     print()
     print("*************************************************************************************************")
@@ -548,12 +672,16 @@ def g_logout():
     print("you are logout from guest")
     print()
     print()
+    
     print("**************************************************************************************************")
+    time.sleep(4)
     main()
 
 
 # main def
 def main():
+    clear()
+    time.sleep(2)
     user = (input("your are admin or guest otherwise press any key to go out?"))
     res = False
     if(user == "admin"):
@@ -591,11 +719,12 @@ def main():
                 print("retype again")
 
     elif(user == "guest"):
-        name = input("enter your name")
+        name = input("enter your name  :   ")
         added()
         guest()
     else:
         print("thanku for visit")
+        exit()
 
 
 main()
